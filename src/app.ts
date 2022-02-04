@@ -1,5 +1,7 @@
-import createError from 'http-errors';
 import express from "express";
+
+//todo: bootstrap
+require('dotenv').config()
 
 const app = express();
 
@@ -7,29 +9,34 @@ require('./middlewares')(app)
 
 require('./routes')(app)
 
+//todo: handle method oluşturmak ?
+//todo: function types
 
-// catch 404 and forward to error handler
-/*
-* app.use((req: any, res: any, next: any) => {
-    next(createError(404));
-});*/
+app.use((req, res, next) => {
+    next({
+        status: 404,
+        message: 'Not Found'
+    })
+})
 
-// error handler
-app.use((req: any, res: any) => {
-    console.log('geldi !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    return res.json({status: 'error'})
+app.use((err: any, req: any, res: any, next: any) => {
+    //todo: hata geldiğinde log'a yazılabilir
+    console.log(err);
 
-  /*  res.locals.message = res.message;
-    res.locals.error = process.env.APP_ENVIRONMENT === 'development' ? res : {};
+    res.locals.message = err.message;
+    res.locals.error = process.env.APP_ENVIRONMENT === 'development' ? err : {};
 
-    console.warn(err);
+    const status = err.status || 500;
 
-    res.status(err.status || 500);
-    res.send(
-        process.env.APP_ENVIRONMENT === 'development'
-            ? {stack: err.stack, message: err.message}
-            : {message: err.message}
-    );*/
-});
+    delete err['status'];
+
+    if (process.env.APP_ENVIRONMENT !== 'development') {
+        delete err['stack'];
+    }
+
+    res
+        .status(status)
+        .send({...err});
+})
 
 export default app

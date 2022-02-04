@@ -1,9 +1,22 @@
 var express = require('express');
 var router = express.Router();
-import createError from "http-errors";
+import response from '../utils/response';
 
-router.get('/', (req: any, res: any, next: any) => {
-    res.json({status: 'success', message: 'Welcome to API'});
-});
+const validate = (req: any, res: any, next: any) => {
+    next(response.success('asdasd'));
+
+    //next(response.authError());
+
+    //next({message: 'afasda', status: 400});
+    /* try {
+         throw new Error('hata')
+     } catch (err) {
+         next(err)
+     }*/
+};
+
+router.get('/',
+    validate
+);
 
 export default router;
