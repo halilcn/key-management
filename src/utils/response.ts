@@ -1,30 +1,77 @@
-//todo:
+interface ResponseParameters {
+    status: number;
+    message: string | object;
+}
 
 interface Response {
     status: number;
-    message?: string;
+    message?: string | object;
     data?: any;
 }
 
-let response: Response[]={};
+//todo: bunu interface ile yap
 
+type test = (message: string | object, status: number) => Response
 
-response.success = (message: string | object = 'Success', status = 200) => {
+//todo: !!
+let response: any = {};
+
+response.success = (message = 'Success', status = 200) => {
+    console.log(message)
     return typeof message !== 'string'
         ? {
             data: message,
-            status: status,
+            status,
         }
         : {
-            message: message,
-            status: status
+            message,
+            status
         }
 };
 
-//todo: type belirlenmesin ??
-//todo: type'lerin interface olması, duplicate engelleme
+response.created = ({message = 'Created', status = 201}: ResponseParameters): Response => {
+    return {
+        message,
+        status
+    }
+};
 
-response.authError = (message: string = 'Authentication Error', status: number = 401): Object => {
+response.noContent = ({message = 'No Content', status = 204}: ResponseParameters): Response => {
+    return {
+        message,
+        status
+    }
+};
+
+response.error = ({message = 'Error', status = 400}: ResponseParameters): Response => {
+    return {
+        message,
+        status
+    }
+};
+
+response.authenticationError = ({message = 'Authentication Error', status = 401}: ResponseParameters): Response => {
+    return {
+        message,
+        status
+    }
+};
+
+response.forbiddenError = ({message = 'Forbidden Error', status = 403}: ResponseParameters): Response => {
+    return {
+        message,
+        status
+    }
+};
+
+response.notFound = ({message = 'Not Found', status = 404}: ResponseParameters): Response => {
+    return {
+        message,
+        status
+    }
+};
+
+response.invalidInput = ({message = 'Invalid Input', status = 422}: ResponseParameters): Response => {
     return {
         message,
         status
