@@ -1,6 +1,8 @@
-interface ResponseParameters {
-    status: number;
-    message: string | object;
+type messageType = string | object;
+
+//todo: function type change to ()=>Response type ?
+interface ResponseList {
+    [key: string]: Function;
 }
 
 interface Response {
@@ -9,15 +11,11 @@ interface Response {
     data?: any;
 }
 
-//todo: bunu interface ile yap
+let response: ResponseList = {};
 
-type test = (message: string | object, status: number) => Response
+response.success = (message: messageType = 'Success'): Response => {
+    const status = 200;
 
-//todo: !!
-let response: any = {};
-
-response.success = (message = 'Success', status = 200) => {
-    console.log(message)
     return typeof message !== 'string'
         ? {
             data: message,
@@ -29,49 +27,64 @@ response.success = (message = 'Success', status = 200) => {
         }
 };
 
-response.created = ({message = 'Created', status = 201}: ResponseParameters): Response => {
+response.created = (message: messageType = 'Created'): Response => {
+    const status = 201;
+
+    console.log(message)
     return {
         message,
         status
     }
 };
 
-response.noContent = ({message = 'No Content', status = 204}: ResponseParameters): Response => {
+response.noContent = (message: messageType = 'No Content'): Response => {
+    const status = 204;
+
     return {
         message,
         status
     }
 };
 
-response.error = ({message = 'Error', status = 400}: ResponseParameters): Response => {
+response.error = (message: messageType = 'Error'): Response => {
+    const status = 400;
+
     return {
         message,
         status
     }
 };
 
-response.authenticationError = ({message = 'Authentication Error', status = 401}: ResponseParameters): Response => {
+response.authenticationError = (message: messageType = 'Authentication Error'): Response => {
+    const status = 401;
+
     return {
         message,
         status
     }
 };
 
-response.forbiddenError = ({message = 'Forbidden Error', status = 403}: ResponseParameters): Response => {
+response.forbiddenError = (message: messageType = 'Forbidden Error'): Response => {
+    const status = 403;
+
     return {
         message,
         status
     }
 };
 
-response.notFound = ({message = 'Not Found', status = 404}: ResponseParameters): Response => {
+response.notFound = (message: messageType = 'Not Found'): Response => {
+    const status = 404;
+
     return {
         message,
         status
     }
 };
 
-response.invalidInput = ({message = 'Invalid Input', status = 422}: ResponseParameters): Response => {
+response.invalidInput = (message: messageType = 'Invalid Input'): Response => {
+    const status = 422;
+
     return {
         message,
         status
