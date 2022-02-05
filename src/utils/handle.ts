@@ -1,28 +1,22 @@
-//todo: dışarda type tanımlaması !
-//todo: types !!!
-//handle: Function
 import response from "./response";
 import {NextFunction} from "express";
 
-interface IHandle {
-    handle: Function;
-    next: NextFunction;
-    customCatch: Function;
+interface Handle {
+    (handle: Function, next: NextFunction, customCatch?: (err: Object | unknown) => boolean): void
 }
 
-//todo:
-
-export default async (handle: Function, next: NextFunction, customCatch: Function = () => {
-}) => {
+const handle: Handle = async (
+    handle,
+    next,
+    customCatch = () => {
+        return false
+    }) => {
     try {
         await handle();
     } catch (err: Object | unknown) {
-        if (err) if (await customCatch(err)) return;
-        console.log('bir hata oluştu')
-        next({
-            message: 'hata !',
-            status: 400
-        })
-        // res.send('bir hat aşıldı')
+        if (err) if (customCatch(err)) return;
+        next(response.error())
     }
 }
+
+export default handle;
