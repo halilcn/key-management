@@ -85,10 +85,15 @@ response.notFound = (message: messageType = 'Not Found'): Response => {
 response.invalidInput = (message: messageType = 'Invalid Input'): Response => {
     const status = 422;
 
-    return {
-        message,
-        status
-    }
+    return typeof message !== 'string'
+        ? {
+            data: message,
+            status,
+        }
+        : {
+            message,
+            status
+        }
 };
 
 export default response

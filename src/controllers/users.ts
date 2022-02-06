@@ -6,9 +6,11 @@ import User from '../models/User';
 
 export const indexTest: RequestHandler = async (req, res, next) => {
     await handle(async () => {
-        await User.create({name: 'test'});
+        //todo: 500 error http code
 
-        return  next(response.created());
+        // await User.create({name: 'test'});
+
+        return next(response.success());
 
         throw new Error('test');
         res.send('ok problem yok')
