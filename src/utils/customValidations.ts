@@ -1,4 +1,4 @@
-import {Model} from 'mongoose';
+import { Model } from 'mongoose';
 
 export const unique = async (model: Model<any>, filters: object) => {
     const res = await model.findOne(filters);

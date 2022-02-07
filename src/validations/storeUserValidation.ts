@@ -1,6 +1,6 @@
 import {body} from "express-validator";
 
-import validationErrors from "../utils/validationErrors";
+import validationHelper from "../utils/validationHelper";
 import {unique} from "../utils/customValidations";
 import User from "../models/User";
 
@@ -12,5 +12,5 @@ export default [
         await unique(User, {email: val});
     }),
     body("password").isString(),
-    validationErrors
+    validationHelper
 ]

@@ -15,7 +15,7 @@ export const register: RequestHandler = (req, res, next) => {
     handle(async () => {
         //todo: sadece validated olanları al !
 
-        const validatedValues = req.body;
+        const validatedValues = req.validated;
         validatedValues.password = await bcrypt.hash(validatedValues.password, 10);
         return res.json(validatedValues);
 
