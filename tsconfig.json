@@ -105,8 +105,5 @@
     /* Skip type checking all .d.ts files. */
     "rootDir": "./",
     "outDir": "./build",
-    "files": [
-      "./src/types/index.d.ts"
-    ]
   }
 }

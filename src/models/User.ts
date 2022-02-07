@@ -1,4 +1,4 @@
-import {Schema, model} from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 const User = new Schema({
         name: {
@@ -21,7 +21,13 @@ const User = new Schema({
         password: {
             type: String,
             required: true
-        }
+        },
+        tokens: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'UserToken'
+            }
+        ]
     },
     {
         timestamps: true

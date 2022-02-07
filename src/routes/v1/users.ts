@@ -1,7 +1,7 @@
 import express from "express";
 
 import * as userController from '../../controllers/users';
-import storeUserValidation from "../../validations/storeUserValidation";
+import storeUserValidation from "../../validations/user/registerValidation";
 
 const router = express.Router();
 
