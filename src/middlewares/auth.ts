@@ -9,6 +9,7 @@ declare global {
     namespace Express {
         interface Request {
             user: any;
+            currentToken: string;
         }
     }
 }
@@ -24,9 +25,13 @@ const auth: RequestHandler = (req, res, next) => {
             const decodedUser = jwt.verify(token, process.env.JWT_TOKEN as string) as IDecodedUser;
 
             const user = await User.findById(decodedUser.user_id);
-            if (!user) throw Error('Wrong user id');
+
+            const userHasToken = user.tokens.some(({ token }: any) => token == req.currentToken);
+            if (!userHasToken) throw Error('Wrong user id');
 
             req.user = user;
+            req.currentToken = token;
+
             next();
         },
         next,

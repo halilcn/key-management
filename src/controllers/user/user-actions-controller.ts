@@ -35,6 +35,16 @@ export const register: RequestHandler = (req, res, next) => {
     }, next);
 };
 
+export const logout: RequestHandler = (req, res, next) => {
+    handle(async () => {
+        req.user.tokens.filter(({ token }: any) => token != req.currentToken);
+
+        await req.user.save();
+
+        next(response.success());
+    }, next);
+};
+
 export const test: RequestHandler = (req, res, next) => {
     handle(async () => {
         next(response.success(req.user));
