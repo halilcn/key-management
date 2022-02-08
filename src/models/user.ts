@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import UserToken from "./shared/user-token";
 
 const User = new Schema({
         name: {
@@ -22,12 +23,7 @@ const User = new Schema({
             type: String,
             required: true
         },
-        tokens: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'UserToken'
-            }
-        ]
+        tokens: [UserToken]
     },
     {
         timestamps: true

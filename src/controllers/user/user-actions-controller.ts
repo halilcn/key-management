@@ -2,34 +2,35 @@ import { RequestHandler } from "express";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
+//todo: başka nasıl export edilebilir
 
-import handle from "../../utils/handle";
 import User from "../../models/user";
+import handle from "../../utils/handle";
 import response from "../../utils/response";
 
 export const login: RequestHandler = (req, res, next) => {
     handle(async () => {
-        const { validated } = req;
+        const { email, password } = req.validated;
+        const user = await User.findOne({ email });
 
-        const token = jwt.sign(
-            { user_id: 1, email: "test@gmail.com" },
-            "token_key",
-            {
-                expiresIn: "24h",
-            }
-        );
+        if (!user || !await bcrypt.compare(password, user.password)) return next(response.authenticationError());
 
-        res.send(token);
+        const token = jwt.sign({ user_id: user._id }, process.env.JWT_TOKEN as string, {});
+
+        user.tokens.push({ token, name: 'web' });
+        await user.save();
+
+        next(response.success({ token }));
     }, next);
 };
-
 
 export const register: RequestHandler = (req, res, next) => {
     handle(async () => {
         const { validated } = req;
-        //todo: bcrypt özellikleri ?
+
         validated.password = await bcrypt.hash(validated.password, 10);
         await User.create(validated);
+
         next(response.created());
     }, next);
 };
