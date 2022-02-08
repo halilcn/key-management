@@ -1,7 +1,7 @@
 import {RequestHandler} from 'express';
 import handle from "../utils/handle";
 import response from "../utils/response";
-import User from '../models/User';
+import User from '../models/user';
 
 
 export const index: RequestHandler = async (req, res, next) => {

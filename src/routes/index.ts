@@ -1,5 +1,5 @@
 import usersRouter from "./v1/users";
-import userActions from "./v1/userActions";
+import userActions from "./v1/user-actions";
 import {Express} from "express";
 
 module.exports = (app: Express) => {

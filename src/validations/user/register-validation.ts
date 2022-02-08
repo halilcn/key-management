@@ -1,8 +1,8 @@
 import { body } from "express-validator";
 
-import validationHelper from "../../utils/validationHelper";
-import { unique } from "../../utils/customValidations";
-import User from "../../models/User";
+import validationHelper from "../../utils/validation-helper";
+import { unique } from "../../utils/custom-validations";
+import User from "../../models/user";
 
 
 export default [

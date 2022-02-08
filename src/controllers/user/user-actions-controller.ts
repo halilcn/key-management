@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 
 import handle from "../../utils/handle";
-import User from "../../models/User";
+import User from "../../models/user";
 import response from "../../utils/response";
 
 export const login: RequestHandler = (req, res, next) => {
