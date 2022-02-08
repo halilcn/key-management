@@ -10,6 +10,6 @@ const router = express.Router();
 
 router.post('/register', storeUserValidation, userActions.register);
 router.post('/login', loginValidation, userActions.login);
-router.post('/test-auth', auth, loginValidation);
+router.post('/test-auth', auth, userActions.test);
 
 export default router;

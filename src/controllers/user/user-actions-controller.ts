@@ -34,3 +34,9 @@ export const register: RequestHandler = (req, res, next) => {
         next(response.created());
     }, next);
 };
+
+export const test: RequestHandler = (req, res, next) => {
+    handle(async () => {
+        next(response.success(req.user));
+    }, next);
+};

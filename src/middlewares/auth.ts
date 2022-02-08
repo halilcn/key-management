@@ -1,35 +1,39 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { RequestHandler } from "express";
 import handle from "../utils/handle";
 import response from "../utils/response";
+import User from "../models/user";
 
-interface test extends JwtPayload {
-    user_id: string,
+//todo:!!
+declare global {
+    namespace Express {
+        interface Request {
+            user: any;
+        }
+    }
 }
 
+interface IDecodedUser {
+    user_id: string,
+    iat: number
+}
 
 const auth: RequestHandler = (req, res, next) => {
     handle(async () => {
-        const token = req.get("Authorization") as string;
+            const token = req.header("Authorization") as string;
+            const decodedUser = jwt.verify(token, process.env.JWT_TOKEN as string) as IDecodedUser;
 
-        //todo::
-        const decodedUser: string = jwt.verify(token, process.env.JWT_TOKEN as string) as string;
-        console.log(typeof decodedUser);
-        console.log(decodedUser);
+            const user = await User.findById(decodedUser.user_id);
+            if (!user) throw Error('Wrong user id');
 
-        return res.send(token);
-
-        //todo: sorgu atılır. req.user içine user bilgileri girilir. next ile devam edilir.
-        //todo: token geçersiz ya da yoksa 401 döndürülür.
-
-        console.log(token);
-        return res.send('ok');
-        return next();
-    }, next, (err) => {
-        console.log(err);
-        next(response.authenticationError());
-        return true;
-    });
+            req.user = user;
+            next();
+        },
+        next,
+        () => {
+            next(response.authenticationError());
+            return true;
+        });
 };
 
 export default auth;
