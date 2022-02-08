@@ -1,32 +1,35 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { RequestHandler } from "express";
+import handle from "../utils/handle";
+import response from "../utils/response";
+
+interface test extends JwtPayload {
+    user_id: string,
+}
 
 
 const auth: RequestHandler = (req, res, next) => {
-    console.log('token geldi !');
-    const token = req.get("Authorization");
+    handle(async () => {
+        const token = req.get("Authorization") as string;
 
-    //todo: try - catch içine alınsa ?
-    const decoded = jwt.verify(token as string, 'token_key');
-    console.log(decoded);
+        //todo::
+        const decodedUser: string = jwt.verify(token, process.env.JWT_TOKEN as string) as string;
+        console.log(typeof decodedUser);
+        console.log(decodedUser);
 
-    //todo: sorgu atılır. req.user içine user bilgileri girilir. next ile devam edilir.
-    //todo: token geçersiz ya da yoksa 401 döndürülür.
+        return res.send(token);
 
-    console.log(token);
-    return next();
+        //todo: sorgu atılır. req.user içine user bilgileri girilir. next ile devam edilir.
+        //todo: token geçersiz ya da yoksa 401 döndürülür.
 
-    /*
-     * if (!token) {
-     return res.status(403).send("A token is required for authentication");
-     }
-     try {
-     const decoded = jwt.verify(token, config.TOKEN_KEY);
-     req.user = decoded;
-     } catch (err) {
-     return res.status(401).send("Invalid Token");
-     }
-     return next();*/
+        console.log(token);
+        return res.send('ok');
+        return next();
+    }, next, (err) => {
+        console.log(err);
+        next(response.authenticationError());
+        return true;
+    });
 };
 
 export default auth;
