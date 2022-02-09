@@ -8,8 +8,10 @@ import Key from "../../models/key";
 export const index: RequestHandler = (req, res, next) => {
     handle(async () => {
         const { userId } = req.params;
-        console.log(userId);
-        next(response.success());
+
+        const keys = await Key.find({ user: userId }).select('name key expireDate createdAt updatedAt');
+
+        next(response.success({ keys }));
     }, next);
 };
 
@@ -25,3 +27,4 @@ export const store: RequestHandler = (req, res, next) => {
         next(response.created());
     }, next);
 };
+
