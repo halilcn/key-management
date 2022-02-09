@@ -5,6 +5,7 @@ import logger from "./utils/logger";
 const app = express();
 
 require('./bootstrap');
+require('./types');
 require('./middlewares')(app);
 require('./routes')(app);
 

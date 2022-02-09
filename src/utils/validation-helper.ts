@@ -3,16 +3,6 @@ import { Request, Response, NextFunction } from "express";
 
 import response from "./response";
 
-//todo: silinecek
-declare global {
-    namespace Express {
-        interface Request {
-            validated: any;
-        }
-    }
-}
-
-
 const addItemToRequest = (req: Request): void => {
     req.validated = matchedData(req);
 };

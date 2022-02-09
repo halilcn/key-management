@@ -1,18 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { RequestHandler } from "express";
+
 import handle from "../utils/handle";
 import response from "../utils/response";
 import User from "../models/user";
-
-//todo:!!
-declare global {
-    namespace Express {
-        interface Request {
-            user: any;
-            currentToken: string;
-        }
-    }
-}
 
 interface IDecodedUser {
     user_id: string,
