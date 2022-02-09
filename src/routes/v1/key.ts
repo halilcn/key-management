@@ -7,5 +7,6 @@ const router = express.Router({ mergeParams: true });
 
 router.get('/', tokenController.index);
 router.post('/', storeKeyValidation, tokenController.store);
+router.delete('/:keyId', tokenController.destroy);
 
 export default router;

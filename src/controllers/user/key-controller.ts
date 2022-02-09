@@ -28,3 +28,11 @@ export const store: RequestHandler = (req, res, next) => {
     }, next);
 };
 
+//todo:token yoksa token yok diye mesaj döndürme, bunu throw error ile fırlatıp, handle içinde yakalama ?
+export const destroy: RequestHandler = (req, res, next) => {
+    handle(async () => {
+        const key = await Key.findOneAndDelete({ user: req.user._id, _id: req.params.keyId });
+        if (!key) return next(response.error());
+        next(response.success());
+    }, next);
+};
