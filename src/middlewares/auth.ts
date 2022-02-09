@@ -12,16 +12,16 @@ interface IDecodedUser {
 
 const auth: RequestHandler = (req, res, next) => {
     handle(async () => {
-            const token = req.header("Authorization") as string;
-            const decodedUser = jwt.verify(token, process.env.JWT_TOKEN as string) as IDecodedUser;
+            const reqToken = req.header("Authorization") as string;
+            const decodedUser = jwt.verify(reqToken, process.env.JWT_TOKEN as string) as IDecodedUser;
 
             const user = await User.findById(decodedUser.user_id);
 
-            const userHasToken = user.tokens.some(({ token }: any) => token == req.currentToken);
+            const userHasToken = user.tokens.some(({ token }: any) => token == reqToken);
             if (!userHasToken) throw Error('Wrong user id');
 
             req.user = user;
-            req.currentToken = token;
+            req.currentToken = reqToken;
 
             next();
         },
