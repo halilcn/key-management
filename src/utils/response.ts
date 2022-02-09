@@ -1,6 +1,5 @@
 type messageType = string | object;
 
-//todo: function type change to ()=>Response type ?
 interface ResponseList {
     [key: string]: Function;
 }
@@ -24,17 +23,17 @@ response.success = (message: messageType = 'Success'): Response => {
         : {
             message,
             status
-        }
+        };
 };
 
 response.created = (message: messageType = 'Created'): Response => {
     const status = 201;
 
-    console.log(message)
+    console.log(message);
     return {
         message,
         status
-    }
+    };
 };
 
 response.noContent = (message: messageType = 'No Content'): Response => {
@@ -43,7 +42,7 @@ response.noContent = (message: messageType = 'No Content'): Response => {
     return {
         message,
         status
-    }
+    };
 };
 
 response.error = (message: messageType = 'Error'): Response => {
@@ -52,7 +51,7 @@ response.error = (message: messageType = 'Error'): Response => {
     return {
         message,
         status
-    }
+    };
 };
 
 response.authenticationError = (message: messageType = 'Authentication Error'): Response => {
@@ -61,7 +60,7 @@ response.authenticationError = (message: messageType = 'Authentication Error'): 
     return {
         message,
         status
-    }
+    };
 };
 
 response.forbiddenError = (message: messageType = 'Forbidden Error'): Response => {
@@ -70,7 +69,7 @@ response.forbiddenError = (message: messageType = 'Forbidden Error'): Response =
     return {
         message,
         status
-    }
+    };
 };
 
 response.notFound = (message: messageType = 'Not Found'): Response => {
@@ -79,7 +78,7 @@ response.notFound = (message: messageType = 'Not Found'): Response => {
     return {
         message,
         status
-    }
+    };
 };
 
 response.invalidInput = (message: messageType = 'Invalid Input'): Response => {
@@ -93,7 +92,7 @@ response.invalidInput = (message: messageType = 'Invalid Input'): Response => {
         : {
             message,
             status
-        }
+        };
 };
 
-export default response
+export default response;

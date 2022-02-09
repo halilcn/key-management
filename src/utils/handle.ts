@@ -1,5 +1,6 @@
-import response from "./response";
 import { NextFunction } from "express";
+
+import response from "./response";
 import logger from "./logger";
 
 interface Handle {

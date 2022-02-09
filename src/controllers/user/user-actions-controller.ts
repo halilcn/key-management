@@ -2,8 +2,6 @@ import { RequestHandler } from "express";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-//todo: başka nasıl export edilebilir
-
 import User from "../../models/user";
 import handle from "../../utils/handle";
 import response from "../../utils/response";
@@ -42,11 +40,5 @@ export const logout: RequestHandler = (req, res, next) => {
         await req.user.save();
 
         next(response.success());
-    }, next);
-};
-
-export const test: RequestHandler = (req, res, next) => {
-    handle(async () => {
-        next(response.success(req.user));
     }, next);
 };

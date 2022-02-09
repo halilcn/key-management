@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
-import UserToken from "./shared/user-token";
+
+import UserToken from "./schematics/user-token";
 
 const User = new Schema({
         name: {
