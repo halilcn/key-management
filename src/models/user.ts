@@ -6,19 +6,21 @@ const User = new Schema({
         name: {
             type: String,
             required: true,
-            maxlength: 20
+            maxlength: 20,
+            trim: true
         },
         surname: {
             type: String,
             required: true,
-            maxlength: 20
+            maxlength: 20,
+            trim: true
         },
         email: {
             type: String,
             required: true,
-            trim: true,
             unique: true,
             lowercase: true,
+            trim: true
         },
         password: {
             type: String,
