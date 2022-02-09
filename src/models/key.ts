@@ -16,6 +16,10 @@ const key = new Schema(
         expireDate: {
             type: Date,
             required: true
+        },
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
         }
     },
     {
