@@ -1,7 +1,7 @@
 import express from "express";
 
-import * as tokenController from '../../controllers/key/key-controller';
-import storeKeyValidation from "../../validations/key/store-key-validation";
+import * as tokenController from '../../controllers/user/key-controller';
+import storeKeyValidation from "../../validations/user/key/store-key-validation";
 
 const router = express.Router({ mergeParams: true });
 

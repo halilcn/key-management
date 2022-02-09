@@ -1,8 +1,8 @@
 import { body } from "express-validator";
 
-import validationHelper from "../../utils/validation-helper";
-import { unique } from "../../utils/custom-validations";
-import User from "../../models/user";
+import validationHelper from "../../../utils/validation-helper";
+import { unique } from "../../../utils/custom-validations";
+import User from "../../../models/user";
 
 export default [
     body("name").isString().isLength({ max: 20 }).not().isEmpty(),

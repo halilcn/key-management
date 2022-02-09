@@ -10,7 +10,7 @@ module.exports = (app: Express) => {
 
     // API v1 routes
     app.use(`${v1}/user-actions`, userActions);
-    app.use(`${v1}/users/:userId/keys`, auth, key);
+    app.use(`${v1}/user/keys`, auth, key);
 
     app.use('/v1/users', usersRouter);
 };

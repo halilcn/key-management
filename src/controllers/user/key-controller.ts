@@ -7,9 +7,9 @@ import Key from "../../models/key";
 
 export const index: RequestHandler = (req, res, next) => {
     handle(async () => {
-        const { userId } = req.params;
-
-        const keys = await Key.find({ user: userId }).select('name key expireDate createdAt updatedAt');
+        const keys = await Key
+            .find({ user: req.user._id })
+            .select('name key expireDate createdAt updatedAt');
 
         next(response.success({ keys }));
     }, next);
