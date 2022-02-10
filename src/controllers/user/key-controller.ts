@@ -6,6 +6,7 @@ import response from "../../utils/response";
 import Key from "../../models/key";
 import { TokenError } from "../../utils/error/errors";
 
+//todo:permissions
 
 export const index: RequestHandler = (req, res, next) => {
     handle(async () => {
@@ -30,17 +31,13 @@ export const store: RequestHandler = (req, res, next) => {
     }, next);
 };
 
-//todo:permissions
-
 export const update: RequestHandler = (req, res, next) => {
     handle(async () => {
-        return res.json(req.validated);
+        const keyUpdated = await Key.findOneAndUpdate({
+            user: req.user._id, _id: req.params.keyId
+        }, req.validated);
 
-        const key = await Key.findOneAndUpdate(
-            {
-                user: req.user._id, _id: req.params.keyId
-            }, {});
-        if (!key) throw new TokenError();
+        if (!keyUpdated) throw new TokenError();
 
         next(response.success());
     }, next);
@@ -48,8 +45,10 @@ export const update: RequestHandler = (req, res, next) => {
 
 export const destroy: RequestHandler = (req, res, next) => {
     handle(async () => {
-        const key = await Key.findOneAndDelete({ user: req.user._id, _id: req.params.keyId });
-        if (!key) throw new TokenError();
+        const keyDeleted = await Key.findOneAndDelete({ user: req.user._id, _id: req.params.keyId });
+
+        if (!keyDeleted) throw new TokenError();
+
         next(response.success());
     }, next);
 };
