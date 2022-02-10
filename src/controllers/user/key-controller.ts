@@ -52,3 +52,20 @@ export const destroy: RequestHandler = (req, res, next) => {
         next(response.success());
     }, next);
 };
+
+export const refresh: RequestHandler = (req, res, next) => {
+    handle(async () => {
+        const keyUpdated = await Key.findOneAndUpdate({
+                user: req.user._id,
+                _id: req.params.keyId
+            },
+            {
+                key: uuidv4()
+            }
+        );
+
+        if (!keyUpdated) throw new TokenError();
+
+        next(response.success());
+    }, next);
+};

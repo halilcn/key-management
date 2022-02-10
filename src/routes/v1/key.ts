@@ -10,7 +10,6 @@ router.get('/', tokenController.index);
 router.post('/', storeKeyValidation, tokenController.store);
 router.put('/:keyId', updateKeyValidation, tokenController.update);
 router.delete('/:keyId', tokenController.destroy);
-
-//todo: token refresh için ayrı api
+router.post('/:keyId/refresh', tokenController.refresh);
 
 export default router;
