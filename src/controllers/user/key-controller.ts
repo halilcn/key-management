@@ -7,17 +7,31 @@ import Key from "../../models/key";
 import { TokenError } from "../../utils/error/errors";
 import KeyPermission from "../../models/key-permission";
 
-//todo: izinleride döndür.
 export const index: RequestHandler = (req, res, next) => {
     handle(async () => {
         const keys = await Key
             .find({ user: req.user._id })
             .select('name key expireDate createdAt updatedAt');
 
+        const aa: any[] = [];
+        keys.forEach((item): any => {
+            aa.push(item._id);
+        });
+
+        const test = KeyPermission.where('key').in(["6207c5aa4b0ed1ac28cbeb3b"]).find();
+        return res.json([test]);
+        //todo: izinleride döndür.
+
+        keys.map((key: any) => {
+            key.permissions = ['asd'];
+        });
+
+
         next(response.success({ keys }));
     }, next);
 };
 
+//todo:max token sayısı için limit koyma ?
 export const store: RequestHandler = (req, res, next) => {
     handle(async () => {
         const { validated } = req;
