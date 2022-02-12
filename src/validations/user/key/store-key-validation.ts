@@ -18,7 +18,9 @@ export default [
         .exists()
         .isIn(Object.values(constants.PRODUCT_SLUGS)),
     body('permissions.*.methods')
-        .isArray()
+        .isArray(),
+    body('permissions.*.methods.*')
+        .isString()
         .isIn(Object.values(constants.METHOD_PERMISSIONS)),
     validationHelper
 ];

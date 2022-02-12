@@ -7,6 +7,7 @@ import Key from "../../models/key";
 import { TokenError } from "../../utils/error/errors";
 import KeyPermission from "../../models/key-permission";
 
+//todo: izinleride döndür.
 export const index: RequestHandler = (req, res, next) => {
     handle(async () => {
         const keys = await Key
@@ -37,11 +38,29 @@ export const store: RequestHandler = (req, res, next) => {
 
 export const update: RequestHandler = (req, res, next) => {
     handle(async () => {
-        const keyUpdated = await Key.findOneAndUpdate({
-            user: req.user._id, _id: req.params.keyId
-        }, req.validated);
+        const updatedOrCreatedProducts: string[] = []; //type ?
+        const { validated } = req;
 
-        if (!keyUpdated) throw new TokenError();
+        const updatedKey = await Key.findOneAndUpdate({
+            user: req.user._id, _id: req.params.keyId
+        }, validated);
+
+        if (!updatedKey) throw new TokenError();
+
+        await Promise.all(validated.permissions.map(async ({ product, methods }: any) => {
+            const updatedKeyPermission = await KeyPermission.findOneAndUpdate({
+                key: updatedKey._id,
+                product
+            }, {
+                methods
+            });
+
+            if (!updatedKeyPermission) await KeyPermission.create({ key: updatedKey._id, product, methods });
+            updatedOrCreatedProducts.push(product);
+        }));
+
+        //todo: bunun olumsuzu olacak
+        await KeyPermission.where('product').in(updatedOrCreatedProducts).remove();
 
         next(response.success());
     }, next);
