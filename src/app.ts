@@ -4,6 +4,8 @@ import logger from "./utils/logger";
 
 const app = express();
 
+//todo: transaction
+
 require('./bootstrap');
 require('./types');
 require('./middlewares')(app);

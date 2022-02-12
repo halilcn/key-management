@@ -7,8 +7,6 @@ import Key from "../../models/key";
 import { TokenError } from "../../utils/error/errors";
 import KeyPermission from "../../models/key-permission";
 
-//todo:permissions
-
 export const index: RequestHandler = (req, res, next) => {
     handle(async () => {
         const keys = await Key
@@ -26,8 +24,6 @@ export const store: RequestHandler = (req, res, next) => {
         validated.key = uuidv4();
         validated.user = req.user._id;
 
-        //todo: transaction
-        //todo: product slugs ? name için
         const createdKey = await Key.create(validated);
         validated.permissions.map((item: any) => {
             item.key = createdKey._id;

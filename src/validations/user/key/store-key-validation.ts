@@ -15,8 +15,8 @@ export default [
         .default([])
         .isArray(),
     body('permissions.*.product')
-        .exists(),
-    //.isIn(['sada']),//todo: !
+        .exists()
+        .isIn(Object.values(constants.PRODUCT_SLUGS)),
     body('permissions.*.methods')
         .isArray()
         .isIn(Object.values(constants.METHOD_PERMISSIONS)),
