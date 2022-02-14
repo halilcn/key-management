@@ -6,9 +6,9 @@ import updateKeyValidation from "../../validations/user/key/update-key-validatio
 
 const router = express.Router({ mergeParams: true });
 
-//todo:show method
 router.get('/', tokenController.index);
 router.post('/', storeKeyValidation, tokenController.store);
+router.get('/:keyId',  tokenController.show);
 router.put('/:keyId', updateKeyValidation, tokenController.update);
 router.delete('/:keyId', tokenController.destroy);
 router.post('/:keyId/refresh', tokenController.refresh);

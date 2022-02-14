@@ -59,6 +59,34 @@ export const store: RequestHandler = (req, res, next) => {
     }, next);
 };
 
+export const show: RequestHandler = (req, res, next) => {
+    handle(async () => {
+        const key = await Key
+            .findOne({
+                user: req.user._id,
+                _id: req.params.keyId
+            })
+            .select('name key expireDate createdAt updatedAt')
+            .lean();
+
+        const permissionsOfKey = await KeyPermission
+            .find({ key: key._id })
+            .lean();
+
+        key.permissions = permissionsOfKey.map(({ _id, product, methods, createdAt, updatedAt }: any) => {
+            return {
+                _id,
+                product,
+                methods,
+                createdAt,
+                updatedAt
+            };
+        });
+
+        next(response.success({ key }));
+    }, next);
+};
+
 export const update: RequestHandler = (req, res, next) => {
     handle(async () => {
         const updatedOrCreatedProducts: string[] = [];

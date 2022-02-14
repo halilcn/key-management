@@ -10,7 +10,7 @@ const KeyPermission = new Schema(
         product: {
             type: String,
             required: true,
-            //todo:enum
+            enum: Object.values(constants.PRODUCT_SLUGS)
         },
         methods: {
             type: [String],
