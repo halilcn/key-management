@@ -61,11 +61,12 @@ export const store: RequestHandler = (req, res, next) => {
 
 export const update: RequestHandler = (req, res, next) => {
     handle(async () => {
-        const updatedOrCreatedProducts: string[] = []; //type ?
+        const updatedOrCreatedProducts: string[] = [];
         const { validated } = req;
 
         const updatedKey = await Key.findOneAndUpdate({
-            user: req.user._id, _id: req.params.keyId
+            user: req.user._id,
+            _id: req.params.keyId
         }, validated);
 
         if (!updatedKey) throw new TokenError();
@@ -82,8 +83,12 @@ export const update: RequestHandler = (req, res, next) => {
             updatedOrCreatedProducts.push(product);
         }));
 
-        //todo: bunun olumsuzu olacak
-        await KeyPermission.where('product').in(updatedOrCreatedProducts).remove();
+        await KeyPermission
+            .find({
+                product: { $nin: updatedOrCreatedProducts },
+                key: updatedKey._id
+            })
+            .remove();
 
         next(response.success());
     }, next);
