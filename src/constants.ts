@@ -1,4 +1,5 @@
 export default {
+    KEYS_LIMIT: 10,
     METHOD_PERMISSIONS: {
         GET: 'get',
         POST: 'post',

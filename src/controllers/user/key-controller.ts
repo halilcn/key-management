@@ -4,8 +4,9 @@ import { v4 as uuidv4 } from 'uuid';
 import handle from "../../utils/handle";
 import response from "../../utils/response";
 import Key from "../../models/key";
-import { TokenError } from "../../utils/error/errors";
+import { TokenError, TokenLimitError } from "../../utils/error/errors";
 import KeyPermission from "../../models/key-permission";
+import constants from "../../constants";
 
 export const index: RequestHandler = (req, res, next) => {
     handle(async () => {
@@ -37,18 +38,20 @@ export const index: RequestHandler = (req, res, next) => {
     }, next);
 };
 
-//todo:max token sayısı için limit koyma ?
 export const store: RequestHandler = (req, res, next) => {
     handle(async () => {
         const { validated } = req;
+        const userId = req.user._id;
+
+        const tokensCountOfUser = await Key.count({ user: userId });
+        if (tokensCountOfUser > constants.KEYS_LIMIT) throw new TokenLimitError();
 
         validated.key = uuidv4();
-        validated.user = req.user._id;
+        validated.user = userId;
 
         const createdKey = await Key.create(validated);
         validated.permissions.map((item: any) => {
             item.key = createdKey._id;
-            return item;
         });
         await KeyPermission.create(validated.permissions);
 

@@ -5,3 +5,10 @@ export class TokenError extends CustomError {
         super(message);
     }
 }
+
+export class TokenLimitError extends CustomError {
+    constructor(message = 'Token limit error') {
+        super(message);
+    }
+}
+
