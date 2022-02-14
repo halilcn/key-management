@@ -6,6 +6,13 @@ export class TokenError extends CustomError {
     }
 }
 
+export class TokenPermissionError extends CustomError {
+    constructor(message = 'Token permission error') {
+        super(message);
+    }
+}
+
+
 export class TokenLimitError extends CustomError {
     constructor(message = 'Token limit error') {
         super(message);

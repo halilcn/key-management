@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import handle from "../../utils/handle";
 import response from "../../utils/response";
 import Key from "../../models/key";
-import { TokenError, TokenLimitError } from "../../utils/error/errors";
+import { TokenError, TokenLimitError, TokenPermissionError } from "../../utils/error/errors";
 import KeyPermission from "../../models/key-permission";
 import constants from "../../constants";
 
@@ -97,8 +97,10 @@ export const update: RequestHandler = (req, res, next) => {
 export const destroy: RequestHandler = (req, res, next) => {
     handle(async () => {
         const keyDeleted = await Key.findOneAndDelete({ user: req.user._id, _id: req.params.keyId });
-
         if (!keyDeleted) throw new TokenError();
+
+        const permissionOfKeyDeleted = await KeyPermission.deleteMany({ key: req.params.keyId });
+        if (!permissionOfKeyDeleted) throw new TokenPermissionError();
 
         next(response.success());
     }, next);
