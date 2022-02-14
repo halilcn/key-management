@@ -16,5 +16,5 @@ module.exports = (app: Express) => {
     // API v1 routes
     app.use(`${v1}/user-actions`, userActions);
     app.use(`${v1}/user/keys`, auth, key);
-    app.use(`${v1}/products`, auth, products);
+    app.use(`${v1}/products`, products); //todo: key check edilecek (permissions)
 };

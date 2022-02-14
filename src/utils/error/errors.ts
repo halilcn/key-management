@@ -12,9 +12,14 @@ export class TokenPermissionError extends CustomError {
     }
 }
 
-
 export class TokenLimitError extends CustomError {
     constructor(message = 'Token limit error') {
+        super(message);
+    }
+}
+
+export class TokenLogError extends CustomError {
+    constructor(message = 'Token log error') {
         super(message);
     }
 }

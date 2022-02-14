@@ -1,27 +1,28 @@
 import { Schema, model } from 'mongoose';
-
-const PRODUCT_TYPES = ['test'];
+import constants from "../constants";
 
 const ProductLog = new Schema({
         key: {
-            type: Schema.Types.ObjectId,
-            ref: 'Key'
-        },
-        user: {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
-        },
-        product: {
             type: String,
             required: true
         },
+        product: {
+            type: String,
+            required: true,
+            enum: Object.values(constants.PRODUCT_SLUGS)
+        },
         method: {
             type: String,
-            enum: PRODUCT_TYPES
+            required: true,
+            enum: Object.values(constants.METHOD_PERMISSIONS)
+        },
+        ip: {
+            type: String,
+            required: true
         }
     },
     {
         timestamps: true
     });
 
-export default model('ProductLog', ProductLog);
+export default model('ProductLog', ProductLog,'product-logs');
