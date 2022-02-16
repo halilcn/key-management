@@ -24,3 +24,8 @@ export class TokenLogError extends CustomError {
     }
 }
 
+export class TokenExpireDateError extends CustomError {
+    constructor(message = 'Token expire date error') {
+        super(message);
+    }
+}

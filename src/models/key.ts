@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 
 //todo: permissions ?
 
-const key = new Schema(
+const Key = new Schema(
     {
         key: {
             type: String,
@@ -26,4 +26,4 @@ const key = new Schema(
         timestamps: true
     });
 
-export default model('Key', key);
+export default model('Key', Key);
