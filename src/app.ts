@@ -1,10 +1,21 @@
 import express from "express";
+import rateLimit from "express-rate-limit";
+
 import response from "./utils/response";
 import logger from "./utils/logger";
 
 const app = express();
 
 //todo: transaction
+
+app.use(
+    rateLimit({
+        windowMs: 60 * 1000,
+        max: 5,
+        standardHeaders: true,
+        legacyHeaders: false
+    })
+);
 
 require('./bootstrap');
 require('./types');
