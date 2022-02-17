@@ -29,3 +29,9 @@ export class TokenExpireDateError extends CustomError {
         super(message);
     }
 }
+
+export class ProductError extends CustomError {
+    constructor(message = 'Product error') {
+        super(message);
+    }
+}
