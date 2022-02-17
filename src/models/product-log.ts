@@ -25,4 +25,4 @@ const ProductLog = new Schema({
         timestamps: true
     });
 
-export default model('ProductLog', ProductLog,'product-logs');
+export default model('ProductLog', ProductLog,'product-log');
