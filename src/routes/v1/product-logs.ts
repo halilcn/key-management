@@ -5,7 +5,6 @@ import getProductLogValidation from "../../validations/product/get-product-log-q
 
 const router = express.Router({ mergeParams: true });
 
-//todo: bu ürün olmayabilir. O zaman boş döndür
 router.get('/:product', getProductLogValidation, productLogsController.index);
 
 export default router;
