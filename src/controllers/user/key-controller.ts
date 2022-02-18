@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { v4 as uuidv4 } from 'uuid';
+import mongoose from "mongoose";
 
 import handle from "../../utils/handle";
 import response from "../../utils/response";
@@ -125,18 +126,23 @@ export const update: RequestHandler = (req, res, next) => {
 
 export const destroy: RequestHandler = (req, res, next) => {
     handle(async () => {
-        //todo:transaction
+        const db = await mongoose.createConnection('mongodb://localhost:27017/key-manager');
+        const session = await db.startSession();
 
-        const keyDeleted = await Key.findOneAndDelete({ user: req.user._id, _id: req.params.keyId });
-        if (!keyDeleted) throw new TokenError();
+        await session.withTransaction(async () => {
+            const keyDeleted = await Key.findOneAndDelete({ user: req.user._id, _id: req.params.keyId }, { session });
+            if (!keyDeleted) throw new TokenError();
 
-        const permissionOfKeyDeleted = await KeyPermission.deleteMany({ key: req.params.keyId });
-        if (!permissionOfKeyDeleted) throw new TokenPermissionError();
+            const permissionOfKeyDeleted = await KeyPermission.deleteMany({ key: req.params.keyId }, { session });
+            if (!permissionOfKeyDeleted) throw new TokenPermissionError();
 
-        const productLogDeleted = await ProductLog.deleteMany({ key: keyDeleted.key });
-        if (!productLogDeleted) throw new ProductLogError();
+            const productLogDeleted = await ProductLog.deleteMany({ key: keyDeleted.key }, { session });
+            if (!productLogDeleted) throw new ProductLogError();
 
-        next(response.success());
+            next(response.success());
+        });
+
+        await session.endSession();
     }, next);
 };
 
