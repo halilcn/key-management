@@ -35,3 +35,9 @@ export class ProductError extends CustomError {
         super(message);
     }
 }
+
+export class ProductLogError extends CustomError {
+    constructor(message = 'Product log error') {
+        super(message);
+    }
+}

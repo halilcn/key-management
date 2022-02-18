@@ -1,7 +1,5 @@
 import { Schema, model } from 'mongoose';
 
-//todo: permissions ?
-
 const Key = new Schema(
     {
         key: {
