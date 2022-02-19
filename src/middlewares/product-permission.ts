@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import dayjs from "dayjs";
 
 import Key from "../models/key";
-import { TokenExpireDateError } from "../utils/error/errors";
+import { TokenError, TokenExpireDateError } from "../utils/error/errors";
 import handle from "../utils/handle";
 import KeyPermission from "../models/key-permission";
 import response from "../utils/response";
@@ -13,7 +13,9 @@ const productPermission: RequestHandler = async (req, res, next) => {
 
         const key = await Key.findOne({ key: headers.key });
 
-        if (dayjs().isAfter(key.expireDate)) throw new TokenExpireDateError();
+        if (!key) throw new TokenError();
+
+        if (dayjs().isAfter(key?.expireDate)) throw new TokenExpireDateError();
 
         const keyHasPermission = await KeyPermission.exists(
             {
