@@ -6,8 +6,6 @@ import logger from "./utils/logger";
 
 const app = express();
 
-//todo: transaction
-
 app.use(
     rateLimit({
         windowMs: 60 * 1000,

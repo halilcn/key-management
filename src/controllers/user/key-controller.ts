@@ -1,6 +1,5 @@
 import { RequestHandler } from "express";
 import { v4 as uuidv4 } from 'uuid';
-import mongoose from "mongoose";
 
 import handle from "../../utils/handle";
 import response from "../../utils/response";

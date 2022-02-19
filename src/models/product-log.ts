@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+
 import constants from "../constants";
 
 const ProductLog = new Schema({
