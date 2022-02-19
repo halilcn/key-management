@@ -3,7 +3,7 @@ import logger from "./utils/logger";
 
 require('dotenv').config();
 
-mongoose.connect(process.env.MONGO_DB_URI as string, { replicaSet: "rs" })
+mongoose.connect(process.env.MONGO_DB_URI as string)
     .then(() => {
         logger.info('Connected to mongoDB');
     })
