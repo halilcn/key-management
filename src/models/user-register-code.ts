@@ -21,4 +21,4 @@ const UserRegisterCode = new Schema({
         timestamps: true
     });
 
-export default model('UserRegisterCode', UserRegisterCode, 'user-register-code');
+export default model('UserRegisterCode', UserRegisterCode, 'user-register-codes');

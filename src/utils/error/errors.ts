@@ -12,6 +12,12 @@ export class UserRegisterCodeExpireDateError extends CustomError {
     }
 }
 
+export class ExistsUserError extends CustomError {
+    constructor(message = 'Exists user error') {
+        super(message);
+    }
+}
+
 export class TokenError extends CustomError {
     constructor(message = 'Token error') {
         super(message);
