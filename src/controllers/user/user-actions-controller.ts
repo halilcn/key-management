@@ -6,6 +6,7 @@ import User from "../../models/user";
 import handle from "../../utils/handle";
 import response from "../../utils/response";
 import sendRegisterCode from '../../jobs/send-register-code';
+import UserRegisterCode from "../../models/user-register-code";
 
 export const login: RequestHandler = (req, res, next) => {
     handle(async () => {
@@ -39,11 +40,13 @@ export const register: RequestHandler = (req, res, next) => {
 
 export const registerCode: RequestHandler = (req, res, next) => {
     handle(async () => {
-        //todo:daha önce var ise sil.
-        await sendRegisterCode('test@gmail.com', { registerCode: 'Asdas' });
+        const { email } = req.validated;
+        const code = Math.floor(100000 + Math.random() * 900000);
 
+        await UserRegisterCode.findOneAndDelete({ email });
+        await UserRegisterCode.create({ email, code });
 
-        return res.send(req.validated.email);
+        await sendRegisterCode(email, { code });
 
         next(response.created());
     }, next);
