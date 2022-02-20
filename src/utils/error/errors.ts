@@ -1,5 +1,17 @@
 import CustomError from "./custom-error";
 
+export class UserRegisterCodeError extends CustomError {
+    constructor(message = 'User register code error') {
+        super(message);
+    }
+}
+
+export class UserRegisterCodeExpireDateError extends CustomError {
+    constructor(message = 'User register code expire date error') {
+        super(message);
+    }
+}
+
 export class TokenError extends CustomError {
     constructor(message = 'Token error') {
         super(message);

@@ -1,12 +1,14 @@
 import { RequestHandler } from "express";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import dayjs from "dayjs";
 
 import User from "../../models/user";
 import handle from "../../utils/handle";
 import response from "../../utils/response";
 import sendRegisterCode from '../../jobs/send-register-code';
 import UserRegisterCode from "../../models/user-register-code";
+import { UserRegisterCodeError, UserRegisterCodeExpireDateError } from "../../utils/error/errors";
 
 export const login: RequestHandler = (req, res, next) => {
     handle(async () => {
@@ -26,10 +28,15 @@ export const login: RequestHandler = (req, res, next) => {
 
 export const register: RequestHandler = (req, res, next) => {
     handle(async () => {
-        return res.send('ok');
-
-
         const { validated } = req;
+
+        const deletedRegisterCode = await UserRegisterCode.findOneAndDelete({
+            email: validated.email,
+            code: validated.code
+        });
+
+        if (!deletedRegisterCode) throw new UserRegisterCodeError();
+        if (dayjs().isAfter(deletedRegisterCode.expireDate)) throw new UserRegisterCodeExpireDateError();
 
         validated.password = await bcrypt.hash(validated.password, 10);
         await User.create(validated);

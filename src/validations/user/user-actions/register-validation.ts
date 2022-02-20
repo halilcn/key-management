@@ -20,6 +20,9 @@ export default [
         .custom(async email => {
             await unique(User, { email });
         }),
+    body("code")
+        .isNumeric()
+        .isLength({ max: 6, min: 6 }),
     body("password")
         .exists(),
     validationHelper
