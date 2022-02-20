@@ -9,7 +9,7 @@ import auth from "../../middlewares/auth";
 const router = express.Router();
 
 router.post('/register', storeUserValidation, userActionsController.register);
-router.post('/register/email', registerEmailValidation, userActionsController.registerEmail);
+router.post('/register/code', registerEmailValidation, userActionsController.registerCode);
 router.post('/login', loginValidation, userActionsController.login);
 router.post('/logout', auth, userActionsController.logout);
 

@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import User from "../../models/user";
 import handle from "../../utils/handle";
 import response from "../../utils/response";
+import sendRegisterCode from '../../jobs/send-register-code';
 
 export const login: RequestHandler = (req, res, next) => {
     handle(async () => {
@@ -36,17 +37,11 @@ export const register: RequestHandler = (req, res, next) => {
     }, next);
 };
 
-export const registerEmail: RequestHandler = (req, res, next) => {
+export const registerCode: RequestHandler = (req, res, next) => {
     handle(async () => {
         //todo:daha önce var ise sil.
+        await sendRegisterCode('test@gmail.com', { registerCode: 'Asdas' });
 
-        let info = await transport.sendMail({
-            from: '"Fred Foo 👻" <foo@example.com>', // sender address
-            to: "halilc.2001@gmail.com", // list of receivers
-            subject: "Hello ✔", // Subject line
-            text: "Hello world?", // plain text body
-            html: "<b>Hello world?</b>", // html body
-        });
 
         return res.send(req.validated.email);
 
