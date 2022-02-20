@@ -24,10 +24,31 @@ export const login: RequestHandler = (req, res, next) => {
 
 export const register: RequestHandler = (req, res, next) => {
     handle(async () => {
+        return res.send('ok');
+
+
         const { validated } = req;
 
         validated.password = await bcrypt.hash(validated.password, 10);
         await User.create(validated);
+
+        next(response.created());
+    }, next);
+};
+
+export const registerEmail: RequestHandler = (req, res, next) => {
+    handle(async () => {
+        //todo:daha önce var ise sil.
+
+        let info = await transport.sendMail({
+            from: '"Fred Foo 👻" <foo@example.com>', // sender address
+            to: "halilc.2001@gmail.com", // list of receivers
+            subject: "Hello ✔", // Subject line
+            text: "Hello world?", // plain text body
+            html: "<b>Hello world?</b>", // html body
+        });
+
+        return res.send(req.validated.email);
 
         next(response.created());
     }, next);
