@@ -10,7 +10,12 @@ import response from "../../utils/response";
 import sendRegisterCode from '../../jobs/send-register-code';
 import sendResetPassword from '../../jobs/send-reset-password';
 import UserRegisterCode from "../../models/user-register-code";
-import { ExistsUserError, UserRegisterCodeError, UserRegisterCodeExpireDateError } from "../../utils/error/errors";
+import {
+    ExistsUserError,
+    UserRegisterCodeError,
+    UserRegisterCodeExpireDateError, UserResetPasswordExpireDateError,
+    UserResetPasswordKeyError
+} from "../../utils/error/errors";
 import UserResetPassword from "../../models/user-reset-password";
 
 export const login: RequestHandler = (req, res, next) => {
@@ -79,8 +84,24 @@ export const resetPasswordEmail: RequestHandler = (req, res, next) => {
     }, next);
 };
 
-//todo:token'ların hepisini sil ! (reset password !)
+export const resetPassword: RequestHandler = (req, res, next) => {
+    handle(async () => {
+        let { email, password } = req.validated;
+        const { key } = req.params;
 
+        const existsUser = await UserResetPassword.findOne({ email, key });
+        if (!existsUser) throw new UserResetPasswordKeyError();
+
+        if (dayjs().isAfter(existsUser.expireDate)) throw new UserResetPasswordExpireDateError();
+
+        password = await bcrypt.hash(password, 10);
+        await User.findOneAndUpdate({ email }, { password, tokens: [] });
+
+        await UserResetPassword.findOneAndDelete({ email, key });
+
+        next(response.success());
+    }, next);
+};
 
 export const logout: RequestHandler = (req, res, next) => {
     handle(async () => {

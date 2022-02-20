@@ -18,6 +18,18 @@ export class ExistsUserError extends CustomError {
     }
 }
 
+export class UserResetPasswordKeyError extends CustomError {
+    constructor(message = 'User reset password key error') {
+        super(message);
+    }
+}
+
+export class UserResetPasswordExpireDateError extends CustomError {
+    constructor(message = 'User reset password expire date error') {
+        super(message);
+    }
+}
+
 export class TokenError extends CustomError {
     constructor(message = 'Token error') {
         super(message);
