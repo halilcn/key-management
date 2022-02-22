@@ -2,6 +2,7 @@ import { Express } from "express";
 
 import userActions from "./v1/user-actions";
 import key from "./v1/key";
+import userSettings from "./v1/user-settings";
 import products from "./v1/products";
 import productLogs from "./v1/product-logs";
 import auth from "../middlewares/auth";
@@ -14,6 +15,7 @@ module.exports = (app: Express) => {
     // API v1 routes
     app.use(`${v1}/user-actions`, userActions);
     app.use(`${v1}/user/keys`, auth, key);
+    app.use(`${v1}/user-settings`, auth, userSettings);
     app.use(`${v1}/products`, productPermission, products);
     app.use(`${v1}/product-logs`, auth, productUserPermission, productLogs);
 };

@@ -10,14 +10,11 @@ import auth from "../../middlewares/auth";
 
 const router = express.Router();
 
-//todo:user info get api, change user settings api
 router.post('/register', storeUserValidation, userActionsController.register);
 router.post('/register/code', registerEmailValidation, userActionsController.registerCode);
 router.post('/login', loginValidation, userActionsController.login);
-
 router.post('/reset-password', resetPasswordEmailValidation, userActionsController.resetPasswordEmail);
 router.post('/reset-password/:key', resetPasswordValidation, userActionsController.resetPassword);
-
 router.post('/logout', auth, userActionsController.logout);
 
 export default router;
