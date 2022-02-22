@@ -4,7 +4,14 @@ import { Request, Response, NextFunction } from "express";
 import response from "./response";
 
 const addItemToRequest = (req: Request): void => {
-    req.validated = matchedData(req);
+    const clearedRequiredItems: any = {};
+    const validationMatchedData = matchedData(req);
+
+    Object.keys(validationMatchedData).filter(key => {
+        if (validationMatchedData[key] != undefined) clearedRequiredItems[key] = validationMatchedData[key];
+    });
+
+    req.validated = clearedRequiredItems;
 };
 
 export default (req: Request, res: Response, next: NextFunction) => {
