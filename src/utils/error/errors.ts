@@ -30,6 +30,18 @@ export class UserResetPasswordExpireDateError extends CustomError {
     }
 }
 
+export class UserResetEmailCodeError extends CustomError {
+    constructor(message = 'User reset email code error') {
+        super(message);
+    }
+}
+
+export class UserResetEmailCodeExpireDateError extends CustomError {
+    constructor(message = 'User reset email code expire date error') {
+        super(message);
+    }
+}
+
 export class TokenError extends CustomError {
     constructor(message = 'Token error') {
         super(message);

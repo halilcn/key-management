@@ -5,6 +5,8 @@ import response from "../../utils/response";
 import User from "../../models/user";
 import sendResetEmail from "../../jobs/send-reset-email";
 import UserResetEmailCode from "../../models/user-reset-email-code";
+import { UserResetEmailCodeError, UserResetEmailCodeExpireDateError } from "../../utils/error/errors";
+import dayjs from "dayjs";
 
 export const index: RequestHandler = (req, res, next) => {
     handle(async () => {
@@ -32,6 +34,22 @@ export const resetEmailCode: RequestHandler = (req, res, next) => {
         await sendResetEmail(email, { code });
 
         next(response.created());
+    }, next);
+};
+
+export const resetEmail: RequestHandler = (req, res, next) => {
+    handle(async () => {
+        const { email, code } = req.body;
+
+        const userResetEmailCode = await UserResetEmailCode.findOne({ email, code, user: req.user._id });
+
+        if (!userResetEmailCode) throw  new UserResetEmailCodeError();
+        if (dayjs().isAfter(userResetEmailCode.expireDate)) throw new UserResetEmailCodeExpireDateError();
+
+        await User.findOneAndUpdate({ _id: req.user._id }, { email });
+        await UserResetEmailCode.findOneAndDelete({ email, code, user: req.user._id });
+
+        next(response.success());
     }, next);
 };
 
