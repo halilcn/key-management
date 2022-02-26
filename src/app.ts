@@ -6,6 +6,10 @@ import logger from "./utils/logger";
 
 const app = express();
 
+//todo:cache mekanizması (logs index method için)
+//todo:socket.io kullanımı
+//todo:testlerin yazımı
+
 app.use(
     rateLimit({
         windowMs: 60 * 1000,
