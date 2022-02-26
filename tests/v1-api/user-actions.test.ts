@@ -7,6 +7,7 @@ import app from "../../src/app";
 import User from '../../src/models/user';
 import UserRegisterCode from "../../src/models/user-register-code";
 import UserResetPassword from "../../src/models/user-reset-password";
+import jwt from "jsonwebtoken";
 
 //{ useNewUrlParser: true, useUnifiedTopology: true }
 beforeEach(async () => {
@@ -100,9 +101,18 @@ describe('USER ACTIONS API', () => {
             email: faker.internet.email(),
             password: 'password'
         };
-        const testToken = { name: 'test', token: 'test-token' };
+        const testToken = {
+            name: 'test',
+            token: ''
+        };
 
-        const createdUser = await User.create({ ...user, password: await bcrypt.hash(user.password, 10) });
+        const createdUser = await User.create({
+            ...user,
+            password: await bcrypt.hash(user.password, 10)
+        });
+
+        testToken.token = jwt.sign({ user_id: createdUser._id }, process.env.JWT_TOKEN as string, {});
+
         await User.findOneAndUpdate({ _id: createdUser._id }, { tokens: [testToken] });
 
         await request(app)

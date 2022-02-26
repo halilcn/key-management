@@ -3,6 +3,7 @@ import rateLimit from "express-rate-limit";
 
 import response from "./utils/response";
 import logger from "./utils/logger";
+import constants from "./constants";
 
 const app = express();
 
@@ -10,16 +11,17 @@ const app = express();
 //todo:socket.io kullanımı
 //todo:testlerin yazımı
 
+require('./bootstrap');
+
 app.use(
     rateLimit({
         windowMs: 60 * 1000,
-        max: 5,
+        max: process.env.APP_ENVIRONMENT === 'development' ? constants.DEVELOPMENT_RATE_LIMIT_MAX : constants.PRODUCT_RATE_LIMIT_MAX,
         standardHeaders: true,
         legacyHeaders: false
     })
 );
 
-require('./bootstrap');
 require('./types');
 require('./middlewares')(app);
 require('./routes')(app);

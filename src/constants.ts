@@ -1,4 +1,6 @@
 export default {
+    DEVELOPMENT_RATE_LIMIT_MAX: 1000,
+    PRODUCT_RATE_LIMIT_MAX: 60,
     KEYS_LIMIT: 10,
     METHOD_PERMISSIONS: {
         GET: 'get',
