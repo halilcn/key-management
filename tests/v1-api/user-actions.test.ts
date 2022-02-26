@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import request from 'supertest';
-//import * as faker from 'faker';
+import faker from "@faker-js/faker";
 
 import app from "../../src/app";
 import User from '../../src/models/user';
@@ -8,7 +8,7 @@ import UserRegisterCode from "../../src/models/user-register-code";
 
 
 beforeEach(async () => {
-    //todo:!
+    //todo:app içinde mongofb bağlantısı zaten yapıyor ?
     await mongoose.connect('mongodb://localhost:27017/key-manager');
 });
 
@@ -17,7 +17,7 @@ describe('USER ACTIONS API', () => {
     test('/register/code', async () => {
         await request(app)
             .post('/api/v1/user-actions/register/code')
-            .send({ email: 'test@gmail.com' })
+            .send({ email: faker.internet.email() })
             .expect(201);
     });
 
@@ -25,7 +25,7 @@ describe('USER ACTIONS API', () => {
         const user = {
             name: 'name',
             surname: 'surname',
-            email: 'test@gmai.com',
+            email: faker.internet.email(),
             code: 123456,
             password: 'password'
         };
@@ -37,4 +37,23 @@ describe('USER ACTIONS API', () => {
             .send(user)
             .expect(201);
     });
+
+    test('/login', async () => {
+        const user = {
+            name: 'name',
+            surname: 'surname',
+            email: faker.internet.email(),
+            password: 'password'
+        };
+
+        //todo: bunun yerine api kullanmak ? çünkü password gibi şeylerde bcrypt yapmak gerekiyor.
+        await User.create(user);
+
+        await request(app)
+            .post('/api/v1/user-actions/login')
+            .send(user)
+            .expect(200);
+    });
+
+
 });
