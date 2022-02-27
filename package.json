@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "nodemon bin/www.ts",
-    "test": "jest"
+    "test": "cross-env MONGO_DB_URI=mongodb://localhost:27017/test-key-manager jest"
   },
   "dependencies": {
     "@babel/core": "^7.17.5",
@@ -46,6 +46,7 @@
     "@types/node": "^17.0.14",
     "@types/uuid": "^8.3.4",
     "babel-jest": "^27.5.1",
+    "cross-env": "^7.0.3",
     "jest": "^27.5.1",
     "nodemon": "^2.0.15",
     "ts-jest": "^27.1.3",

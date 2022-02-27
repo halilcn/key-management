@@ -1,19 +1,12 @@
-import mongoose from "mongoose";
 import request from 'supertest';
 import faker from "@faker-js/faker";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 import app from "../../src/app";
 import User from '../../src/models/user';
 import UserRegisterCode from "../../src/models/user-register-code";
 import UserResetPassword from "../../src/models/user-reset-password";
-import jwt from "jsonwebtoken";
-
-//{ useNewUrlParser: true, useUnifiedTopology: true }
-beforeEach(async () => {
-    //todo:app içinde mongofb bağlantısı zaten yapıyor ?
-    await mongoose.connect('mongodb://localhost:27017/key-manager');
-});
 
 describe('USER ACTIONS API', () => {
 
