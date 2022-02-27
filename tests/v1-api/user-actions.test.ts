@@ -1,6 +1,5 @@
 import request from 'supertest';
 import faker from "@faker-js/faker";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import app from "../../src/app";
