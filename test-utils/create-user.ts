@@ -8,6 +8,7 @@ import User from "../src/models/user";
 interface ICreateUser {
     _id: Schema.Types.ObjectId,
     email: string,
+    password: string,
     token: string
 }
 
@@ -35,6 +36,7 @@ export default async (): Promise<ICreateUser> => {
     return {
         _id: createdUser._id,
         email: user.email,
+        password: user.password,
         token: testToken.token
     };
 }
