@@ -10,14 +10,14 @@ import UserResetPassword from "../../src/models/user-reset-password";
 
 describe('USER ACTIONS API', () => {
 
-    test('/register/code', async () => {
+    test('/register/code (POST)', async () => {
         await request(app)
             .post('/api/v1/user-actions/register/code')
             .send({ email: faker.internet.email() })
             .expect(201);
     });
 
-    test('/register', async () => {
+    test('/register (POST)', async () => {
         const user = {
             name: 'name',
             surname: 'surname',
@@ -34,7 +34,7 @@ describe('USER ACTIONS API', () => {
             .expect(201);
     });
 
-    test('/login', async () => {
+    test('/login (POST)', async () => {
         const user = {
             name: 'name',
             surname: 'surname',
@@ -50,7 +50,7 @@ describe('USER ACTIONS API', () => {
             .expect(200);
     });
 
-    test('/reset-password', async () => {
+    test('/reset-password (POST)', async () => {
         const user = {
             name: 'name',
             surname: 'surname',
@@ -66,7 +66,7 @@ describe('USER ACTIONS API', () => {
             .expect(201);
     });
 
-    test('/reset-password/:key', async () => {
+    test('/reset-password/:key (POST)', async () => {
         const user = {
             name: 'name',
             surname: 'surname',
@@ -87,7 +87,7 @@ describe('USER ACTIONS API', () => {
             .expect(200);
     });
 
-    test('/logout', async () => {
+    test('/logout (POST)', async () => {
         const user = {
             name: 'name',
             surname: 'surname',
