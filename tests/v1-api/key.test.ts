@@ -1,14 +1,8 @@
 import request from 'supertest';
-import faker from "@faker-js/faker";
-import jwt from "jsonwebtoken";
 
 import app from "../../src/app";
-import User from '../../src/models/user';
-import UserRegisterCode from "../../src/models/user-register-code";
-import UserResetPassword from "../../src/models/user-reset-password";
 import createUser from '../../test-utils/create-user';
 import Key from "../../src/models/key";
-import KeyPermission from "../../src/models/key-permission";
 
 describe('KEY API', () => {
     test('/ (GET)', async () => {
@@ -36,12 +30,12 @@ describe('KEY API', () => {
     });
 
     test('/:keyId (GET)', async () => {
-        //todo:error
-        const { token } = await createUser();
+        const { token, _id } = await createUser();
         const key = {
+            user: _id,
             key: 'test-key',
             name: 'test',
-            expireDate: '2099/01/01'
+            expireDate: '2099/01/01',
         };
 
         const createdKey = await Key.create(key);
@@ -53,9 +47,9 @@ describe('KEY API', () => {
     });
 
     test('/:keyId (PUT)', async () => {
-        //todo:error
-        const { token } = await createUser();
+        const { token, _id } = await createUser();
         const key = {
+            user: _id,
             key: 'test-key',
             name: 'test',
             expireDate: '2099/01/01'
@@ -67,6 +61,40 @@ describe('KEY API', () => {
             .put(`/api/v1/user/keys/${createdKey._id}`)
             .set('Authorization', token)
             .send({})
+            .expect(200);
+    });
+
+    test('/:keyId (DELETE)', async () => {
+        const { token, _id } = await createUser();
+        const key = {
+            user: _id,
+            key: 'test-key',
+            name: 'test',
+            expireDate: '2099/01/01'
+        };
+
+        const createdKey = await Key.create(key);
+
+        await request(app)
+            .delete(`/api/v1/user/keys/${createdKey._id}`)
+            .set('Authorization', token)
+            .expect(200);
+    });
+
+    test('/:keyId/refresh (DELETE)', async () => {
+        const { token, _id } = await createUser();
+        const key = {
+            user: _id,
+            key: 'test-key',
+            name: 'test',
+            expireDate: '2099/01/01'
+        };
+
+        const createdKey = await Key.create(key);
+
+        await request(app)
+            .post(`/api/v1/user/keys/${createdKey._id}/refresh`)
+            .set('Authorization', token)
             .expect(200);
     });
 });
