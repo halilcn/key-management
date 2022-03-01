@@ -9,7 +9,6 @@ const app = express();
 
 //todo:cache mekanizması (logs index method için)
 //todo:socket.io kullanımı
-//todo:testlerin yazımı
 
 require('./bootstrap');
 
