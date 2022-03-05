@@ -7,7 +7,6 @@ import constants from "./constants";
 
 const app = express();
 
-//todo:cache mekanizması (logs index method için)
 //todo:socket.io kullanımı
 
 require('./bootstrap');

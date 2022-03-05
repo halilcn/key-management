@@ -1,4 +1,6 @@
 import { RequestHandler } from "express";
+const fs = require('fs');
+import dayjs from "dayjs";
 
 import handle from "../../utils/handle";
 import response from "../../utils/response";
@@ -6,7 +8,6 @@ import User from "../../models/user";
 import sendResetEmail from "../../jobs/send-reset-email";
 import UserResetEmailCode from "../../models/user-reset-email-code";
 import { UserResetEmailCodeError, UserResetEmailCodeExpireDateError } from "../../utils/error/errors";
-import dayjs from "dayjs";
 
 export const index: RequestHandler = (req, res, next) => {
     handle(async () => {
@@ -53,4 +54,15 @@ export const resetEmail: RequestHandler = (req, res, next) => {
     }, next);
 };
 
+export const updateImage: RequestHandler = (req, res, next) => {
+    handle(async () => {
+        const file = req.file;
 
+        const { image } = await User.findOne({_id:req.user._id})
+        fs.unlinkSync(image);
+
+        await User.findOneAndUpdate({_id:req.user._id},{image:file?.path})
+
+        next(response.success({path:file?.path}))
+    }, next);
+};
