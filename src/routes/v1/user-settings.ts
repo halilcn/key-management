@@ -11,5 +11,6 @@ router.get('/', userSettingsController.index);
 router.put('/', userSettingsValidation, userSettingsController.update);
 router.post('/reset-email/code', userResetEmailValidation, userSettingsController.resetEmailCode);
 router.post('/reset-email', userSettingsController.resetEmail);
+router.post('/reset-email', userSettingsController.resetEmail);
 
 export default router;

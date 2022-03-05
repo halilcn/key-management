@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import {Schema, model} from 'mongoose';
 
 import UserToken from "./schematics/user-token";
 
@@ -14,6 +14,11 @@ const User = new Schema({
             required: true,
             maxlength: 20,
             trim: true
+        },
+        image: {
+            type: String,
+            required: false,
+            default: 'https://randomuser.me/api/portraits/men/48.jpg'
         },
         email: {
             type: String,
