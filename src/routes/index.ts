@@ -1,6 +1,7 @@
 import { Express } from "express";
 
 import userActions from "./v1/user-actions";
+import version from "./v1/version";
 import key from "./v1/key";
 import userSettings from "./v1/user-settings";
 import products from "./v1/products";
@@ -11,6 +12,8 @@ import productUserPermission from "../middlewares/product-user-permission";
 
 module.exports = (app: Express) => {
     const v1 = '/api/v1';
+
+    app.use('/api/version', version);
 
     // API v1 routes
     app.use(`${v1}/user-actions`, userActions);
