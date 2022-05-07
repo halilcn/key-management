@@ -7,8 +7,6 @@ import constants from "./constants";
 
 const app = express();
 
-//todo:socket.io kullanımı
-
 require('./bootstrap');
 
 app.use(
